@@ -23,6 +23,12 @@ and a place where the AI assistant's durable context and session history lives.
   `ai-memory/sessions/` on request.
 - Wrote the root `README.md` explaining the template's purpose, structure, and session workflow.
 - Wrote `.gitignore` covering Python/notebook/OS/editor noise plus `project/data/*`.
+- Created the initial commit and pushed to `origin main`. First push attempt failed with a 403
+  ("Permission to ejasonbarretto/template-aistructure.git denied to jason-engineer01") because the
+  machine's active `gh` account was `jason-engineer01`, which lacks access to this repo. Fixed by
+  running `gh auth switch --hostname github.com --user ejasonbarretto` and `gh auth setup-git`
+  (the latter repoints git's `credential.helper` to delegate to `gh` — a global git config change
+  on this machine, not scoped to this repo). Push then succeeded.
 
 ## Decisions & rationale
 
@@ -45,4 +51,6 @@ and a place where the AI assistant's durable context and session history lives.
   turns out to be wanted after all.
 - `instructions.md`, `grounding.md`, and `guardrails.md` are still fill-in templates with no
   project-specific content — populate them once a real DE project starts using this template.
-- Initial commit and push to `origin main` still need to happen after this log is written.
+- This machine has two `gh` accounts (`jason-engineer01`, `ejasonbarretto`); only `ejasonbarretto`
+  has access to this repo. If a future push gets a 403, check `gh auth status` and `gh auth switch`
+  to `ejasonbarretto` first.
