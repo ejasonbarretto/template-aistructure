@@ -43,3 +43,10 @@ Add two improvements to the AI-assisted session workflow:
   once confirmed, add it so `/start-session` can surface it explicitly.
 - Consider adding an intermediate-commit convention (e.g. a `/checkpoint` skill) for long sessions
   where incremental saves are useful.
+- **Template adoption guidance needs improvement**: when bringing this template into an existing
+  project, only `.claude/skills/` and the `ai-memory/` structure (folder layout + README files)
+  should be copied. The three content files (`instructions.md`, `grounding.md`, `guardrails.md`)
+  must be written fresh — not copied — because their content is project-specific. Fix: add a
+  visible `<!-- Schema only — write project-specific content here, do not copy from template -->`
+  comment at the top of each of the three files, and document the adoption steps in the root
+  `README.md`.
