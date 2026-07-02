@@ -9,8 +9,10 @@ _e.g. PII/compliance rules, what data can leave the local environment, retention
 
 ## Things never to do
 
-_e.g. never run destructive operations against production data, never commit credentials or raw
-data files._
+- **Never commit or push directly to `main`** — all session work must happen on a
+  `session/YYYY-MM-DD-topic` branch and reach `main` only through a reviewed PR.
+- _Never run destructive operations against production data._
+- _Never commit credentials, secrets, or raw data files._
 
 ## Approval required before
 

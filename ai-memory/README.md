@@ -12,13 +12,16 @@ with the rest of the repo, and readable by any AI assistant (not tied to one too
 
 ## Session workflow
 
-**At the start of a session**, read (or have the assistant read):
-1. `instructions/instructions.md`
-2. `grounding/grounding.md`
-3. `guardrails/guardrails.md`
-4. The most recent file in `sessions/`
+**1. Start** — run `/start-session`
+- Verifies the active GitHub and Claude accounts match what this repo expects
+- Creates a session branch (`session/YYYY-MM-DD-topic`) so all work stays off `main`
+- Reads and summarizes context from the four files below so the assistant is ready to work
 
-**At the end of a session**, run `/save-session` to log what happened. If the session produced a
-durable decision (a new convention, a new piece of domain knowledge, a new constraint), update
-`instructions/`, `grounding/`, or `guardrails/` directly — don't leave it stranded only in the
-session log.
+**2. Work** — do the actual DE work in `project/`
+- All commits during the session go to the session branch
+- You can commit intermediate progress at any point; it won't touch `main`
+
+**3. End** — run `/save-session`
+- Writes the session log to `ai-memory/sessions/`
+- Updates `instructions/`, `grounding/`, or `guardrails/` if the session produced durable decisions
+- Commits all changes, pushes the session branch, and opens a PR to `main` for review

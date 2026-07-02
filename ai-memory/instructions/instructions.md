@@ -14,6 +14,10 @@ Remote: `https://github.com/ejasonbarretto/template-aistructure.git`. Push acces
 does not have access and will get a 403. Check `gh auth status`; switch with
 `gh auth switch --hostname github.com --user ejasonbarretto` if needed.
 
+**Branching convention**: all session work happens on a `session/YYYY-MM-DD-topic` branch (e.g.
+`session/2026-07-02-improve-workflow`). Never commit directly to `main`. At the end of each
+session, `/save-session` pushes the branch and opens a PR to `main` for manual review and merge.
+
 ## Coding conventions
 
 _e.g. formatting/linting tools, naming conventions, testing expectations._
