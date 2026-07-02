@@ -1,6 +1,6 @@
 ---
 name: start-session
-description: Start a new AI-assisted working session. Verifies the active GitHub and Claude accounts, creates a session branch, and loads context from ai-memory/ so the assistant is ready to work. Run this at the beginning of every session.
+description: Start a new AI-assisted working session. Verifies the active GitHub and Claude accounts, checks out the developer's persistent workspace branch (synced with main), and loads context from ai-memory/ so the assistant is ready to work. Run this at the beginning of every session.
 ---
 
 # Start Session
@@ -43,16 +43,32 @@ Wait for the user to confirm before continuing.
 Ask the user: "What's the topic for this session? (short kebab-case slug, e.g.
 `add-ingestion-pipeline`)"
 
-### 4. Create the session branch
+This slug is used only for the session log filename — not for the branch name.
 
-Using today's date (YYYY-MM-DD) and the slug from step 3, run:
+### 4. Check out the workspace branch
+
+Read the developer's workspace branch name from `ai-memory/instructions/instructions.md`
+(documented as `Developer branch: workspace/<name>`).
+
+**If the branch does not exist yet** (first time setup):
 ```
-git checkout -b session/YYYY-MM-DD-<topic>
+git checkout main
+git pull origin main
+git checkout -b workspace/<name>
+git push -u origin workspace/<name>
 ```
 
-Confirm the branch was created:
-> Session branch created: **session/YYYY-MM-DD-<topic>**
-> All work this session will happen on this branch.
+**If the branch already exists**, check it out and sync with main so any changes that landed
+in main since the last session are included:
+```
+git checkout workspace/<name>
+git pull origin workspace/<name>   # get any remote changes
+git merge main                     # bring in latest from main
+```
+
+Confirm which branch is now active:
+> Workspace branch: **workspace/<name>** ✓
+> Synced with main — ready for new work.
 
 ### 5. Load and summarize context
 

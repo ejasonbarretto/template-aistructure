@@ -14,9 +14,16 @@ Remote: `https://github.com/ejasonbarretto/template-aistructure.git`. Push acces
 does not have access and will get a 403. Check `gh auth status`; switch with
 `gh auth switch --hostname github.com --user ejasonbarretto` if needed.
 
-**Branching convention**: all session work happens on a `session/YYYY-MM-DD-topic` branch (e.g.
-`session/2026-07-02-improve-workflow`). Never commit directly to `main`. At the end of each
-session, `/save-session` pushes the branch and opens a PR to `main` for manual review and merge.
+**Developer branch**: `workspace/jason`
+_(Update this value when adopting this template in a new project — `/start-session` and
+`/save-session` read it from here.)_
+
+**Branching convention**:
+- All session work happens on the developer's persistent `workspace/<name>` branch.
+- Never commit directly to `main`.
+- At the end of each session, `/save-session` pushes `workspace/<name>`, opens a PR to `main`,
+  and auto-merges it — keeping `main` always current after every session.
+- The workspace branch is **never deleted**; it persists across sessions.
 
 ## Coding conventions
 

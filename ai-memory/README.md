@@ -14,7 +14,8 @@ with the rest of the repo, and readable by any AI assistant (not tied to one too
 
 **1. Start** — run `/start-session`
 - Verifies the active GitHub and Claude accounts match what this repo expects
-- Creates a session branch (`session/YYYY-MM-DD-topic`) so all work stays off `main`
+- Checks out the persistent `workspace/<name>` branch (creates it from `main` if first time),
+  then syncs it with `main` so any changes from previous sessions are included
 - Reads and summarizes context from the four files below so the assistant is ready to work
 
 **2. Work** — do the actual DE work in `project/`
@@ -24,4 +25,5 @@ with the rest of the repo, and readable by any AI assistant (not tied to one too
 **3. End** — run `/save-session`
 - Writes the session log to `ai-memory/sessions/`
 - Updates `instructions/`, `grounding/`, or `guardrails/` if the session produced durable decisions
-- Commits all changes, pushes the session branch, and opens a PR to `main` for review
+- Commits all changes, pushes `workspace/<name>`, opens a PR to `main`, and auto-merges it —
+  `main` is always current after every session ends

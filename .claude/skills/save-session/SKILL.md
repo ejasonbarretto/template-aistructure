@@ -1,19 +1,20 @@
 ---
 name: save-session
-description: Save a structured log of the current AI-assisted work session, then commit, push, and open a PR to main. Use when the user asks to save, log, record, or wrap up the session, or wants this conversation's work persisted for next time.
+description: Save a structured log of the current AI-assisted work session, commit and push to the workspace branch, then auto-merge to main so main stays current. Use when the user asks to save, log, record, or wrap up the session.
 ---
 
 # Save Session
 
-Close out the session by writing a log, committing all work to the session branch, and opening a
-PR to `main` for review.
+Close out the session by writing a log, committing all work to the workspace branch, and
+auto-merging into `main` so it stays up to date.
 
 ## Steps
 
 ### 1. Write the session log
 
-Determine today's date (`YYYY-MM-DD`) and a short kebab-case slug summarizing the session topic.
-If a file with that name already exists in `ai-memory/sessions/`, append `-2`, `-3`, etc.
+Determine today's date (`YYYY-MM-DD`) and the session topic slug (ask the user if unknown, or
+re-use the slug from `/start-session`). If a file with that name already exists in
+`ai-memory/sessions/`, append `-2`, `-3`, etc.
 
 Create `ai-memory/sessions/YYYY-MM-DD-topic.md` using the template below. Fill in each section
 from the actual conversation — do not invent details. If a section has nothing relevant, write
@@ -28,16 +29,17 @@ the session log:
 - `ai-memory/grounding/grounding.md` — domain knowledge, schemas, glossary
 - `ai-memory/guardrails/guardrails.md` — hard constraints, things never to do
 
-### 3. Check the session branch
+### 3. Verify the workspace branch
 
-Run `git branch --show-current` to confirm you are on a `session/` branch. If the current branch
-is `main`, **stop** and warn the user:
+Run `git branch --show-current`. The current branch must be `workspace/<name>` (read from
+`ai-memory/instructions/instructions.md`). If it is `main` or anything else, **stop** and warn:
 
-> ⚠️ You are on `main`. Work should not be committed directly to `main`.
-> Run `/start-session` first to create a session branch, or manually run:
-> `git checkout -b session/YYYY-MM-DD-<topic>`
+> ⚠️ You are not on the workspace branch.
+> Expected: **workspace/<name>**
+> Current: **<current branch>**
+> Run `/start-session` to check out the correct branch before saving.
 
-Do not proceed with the commit until on a session branch.
+Do not proceed with the commit until on the workspace branch.
 
 ### 4. Commit all changes
 
@@ -46,26 +48,35 @@ git add -A
 git commit -m "Session: YYYY-MM-DD — <topic>"
 ```
 
-### 5. Push the session branch
+### 5. Push the workspace branch
 
 ```
-git push -u origin session/YYYY-MM-DD-<topic>
+git push origin workspace/<name>
 ```
 
-### 6. Open a PR to main
+### 6. Open a PR and auto-merge to main
 
-Using the session log's **Objective** and **What we did** sections as the body:
-
+Open the PR using the session log's **Objective** and **What we did** as the body:
 ```
 gh pr create \
   --title "Session: YYYY-MM-DD — <topic>" \
-  --body "## Objective\n<from session log>\n\n## What we did\n<from session log>" \
+  --body "## Objective
+<from session log>
+
+## What we did
+<from session log>" \
   --base main
 ```
 
-### 7. Report to the user
+Then immediately auto-merge it (do **not** delete the workspace branch — it is persistent):
+```
+gh pr merge --merge
+```
 
-Print the PR URL and confirm the session is fully saved.
+### 7. Confirm main is updated
+
+Run `git log origin/main --oneline -3` and show the output so the user can confirm the session
+commit landed on `main`.
 
 ---
 
